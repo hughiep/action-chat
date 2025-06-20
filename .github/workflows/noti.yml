@@ -1,0 +1,21 @@
+name: Notification Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: 'notify google chat'
+        id: notify
+        if: ${{ inputs.fail_intentionally }}
+        uses: 'google-github-actions/send-google-chat-webhook@v0.0.2'
+        with:
+          webhook_url: '${{ secrets.WEBHOOK_URL }}'
+          mention: "<users/all>"
